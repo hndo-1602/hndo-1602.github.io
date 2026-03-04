@@ -1,80 +1,535 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Scientific Portfolio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio scientifique – Như Nguyen</title>
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --line: rgba(255,255,255,0.12);
+      --accent: #66d9ff;
+      --accent2:#a78bfa;
+      --ok:#34d399;
+      --warn:#fbbf24;
+      --danger:#fb7185;
+      --shadow: 0 18px 45px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --max: 980px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(102,217,255,0.18), transparent 60%),
+        radial-gradient(900px 500px at 85% 15%, rgba(167,139,250,0.18), transparent 60%),
+        radial-gradient(900px 600px at 50% 90%, rgba(52,211,153,0.12), transparent 60%),
+        var(--bg);
+      line-height: 1.6;
+    }
+
+    a{ color: var(--accent); text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 18px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 4px rgba(102,217,255,0.12);
+    }
+    .nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .nav a{
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav a:hover{
+      color: var(--text);
+      border-color: rgba(255,255,255,0.16);
+      text-decoration: none;
+    }
+
+    /* Hero */
+    .hero{
+      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 250px at 20% 0%, rgba(102,217,255,0.16), transparent 60%),
+        radial-gradient(600px 250px at 80% 0%, rgba(167,139,250,0.16), transparent 60%);
+      pointer-events:none;
+    }
+    .hero > *{ position:relative; z-index:1; }
+
+    .title{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      gap: 10px 14px;
+      margin:0 0 10px;
+    }
+    .title h1{
+      margin:0;
+      font-size: 34px;
+      line-height:1.15;
+      letter-spacing: -0.6px;
+    }
+    .badge{
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .subtitle{
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 70ch;
+    }
+
+    .cta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      text-decoration:none;
+      font-size: 14px;
+    }
+    .btn:hover{
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.09);
+      text-decoration:none;
+    }
+    .btn.primary{
+      border-color: rgba(102,217,255,0.40);
+      background: linear-gradient(135deg, rgba(102,217,255,0.20), rgba(167,139,250,0.16));
+    }
+    .btn small{
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    /* Sections */
+    section{ margin-top: 18px; }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 860px){
+      .grid{ grid-template-columns: 1fr; }
+      .title h1{ font-size: 30px; }
+    }
+
+    .card{
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--radius2);
+      padding: 16px;
+    }
+    .card h3{
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+    }
+    .card p{ margin: 0; color: var(--muted); }
+
+    .pillrow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 10px;
+    }
+    .pill{
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.86);
+      font-size: 13px;
+    }
+
+    .cols3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    @media (max-width: 860px){
+      .cols3{ grid-template-columns: 1fr; }
+    }
+
+    /* Project cards */
+    .project{
+      padding: 16px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.04));
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+    .project h4{
+      margin:0 0 6px;
+      font-size: 16px;
+      letter-spacing:-0.2px;
+    }
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin: 8px 0 0;
+    }
+    .tag{
+      font-size: 12px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .tag.ok{ border-color: rgba(52,211,153,0.28); color: rgba(52,211,153,0.90); }
+    .tag.blue{ border-color: rgba(102,217,255,0.28); color: rgba(102,217,255,0.92); }
+    .tag.purple{ border-color: rgba(167,139,250,0.28); color: rgba(167,139,250,0.92); }
+    .tag.warn{ border-color: rgba(251,191,36,0.28); color: rgba(251,191,36,0.92); }
+
+    .project .links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .project .links a{
+      font-size: 13px;
+      color: var(--accent);
+      border: 1px solid rgba(102,217,255,0.22);
+      background: rgba(102,217,255,0.08);
+      padding: 7px 10px;
+      border-radius: 12px;
+      text-decoration:none;
+    }
+    .project .links a:hover{
+      border-color: rgba(102,217,255,0.36);
+      background: rgba(102,217,255,0.12);
+    }
+
+    /* Footer */
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+    code.inline{
+      font-family: var(--mono);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.86);
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
 
-<h1>Như Nguyen</h1>
-<h2>Portfolio scientifique</h2>
+    <div class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Portfolio scientifique</span>
+      </div>
+      <div class="nav">
+        <a href="#about">À propos</a>
+        <a href="#skills">Compétences</a>
+        <a href="#projects">Projets</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
 
-<p>Étudiante en BUT Chimie – IUT d'Orsay (Université Paris-Saclay)</p>
+    <header class="hero">
+      <div class="title">
+        <h1>Như Nguyen</h1>
+        <span class="badge">BUT Chimie · IUT d’Orsay · Université Paris-Saclay</span>
+        <span class="badge">Matériaux · Procédés · Analyse · Modélisation</span>
+      </div>
 
-<hr>
+      <p class="subtitle">
+        Étudiante en BUT Chimie, je m’intéresse à l’analyse expérimentale, aux matériaux et aux outils numériques
+        (traitement de données, Python). Ce site présente mes compétences et quelques projets de TP.
+      </p>
 
-<h3>À propos</h3>
-<p>
-Je suis étudiante en BUT Chimie à l’IUT d’Orsay. 
-Je m’intéresse particulièrement aux matériaux, à l’analyse chimique 
-et à la modélisation scientifique.
-</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">Voir les projets</a>
+        <a class="btn" href="mailto:votre-email@email.com">Email <small>votre-email@email.com</small></a>
+        <a class="btn" href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </header>
 
-<hr>
+    <section id="about" class="grid">
+      <div class="card">
+        <h3>À propos</h3>
+        <p>
+          Je développe une approche rigoureuse en laboratoire (préparation de solutions, mesures, exploitation des données)
+          et je souhaite progresser sur les aspects <b>analyse</b>, <b>matériaux</b> et <b>modélisation/simulation</b>.
+          Je peux présenter des comptes rendus, graphiques (chromatogrammes, diffractogrammes, courbes) et scripts de calcul.
+        </p>
+        <div class="pillrow">
+          <span class="pill">Rigueur · Sécurité</span>
+          <span class="pill">Analyse de données</span>
+          <span class="pill">Travail en équipe</span>
+          <span class="pill">Autonomie</span>
+        </div>
+      </div>
 
-<h3>Compétences</h3>
+      <div class="card">
+        <h3>Objectif</h3>
+        <p>
+          Stage puis alternance orientés <b>analyse</b>, <b>matériaux</b>, <b>procédés</b> ou <b>modélisation</b>.
+        </p>
+        <div class="pillrow">
+          <span class="pill">Stage: 10+ semaines</span>
+          <span class="pill">Île-de-France</span>
+          <span class="pill">BUT2 → BUT3</span>
+        </div>
+      </div>
+    </section>
 
-<h4>Techniques de laboratoire</h4>
-<ul>
-<li>Préparation de solutions et manipulations de laboratoire</li>
-<li>Chromatographie (HPLC / CPG)</li>
-<li>Spectroscopie UV-Visible</li>
-<li>Polarographie</li>
-</ul>
+    <section id="skills" class="card">
+      <h3>Compétences</h3>
 
-<h4>Analyse scientifique</h4>
-<ul>
-<li>Diffraction des rayons X</li>
-<li>Analyse de données expérimentales</li>
-<li>Interprétation de résultats analytiques</li>
-</ul>
+      <div class="cols3">
+        <div class="card" style="padding:14px;">
+          <h3>Techniques de laboratoire</h3>
+          <div class="pillrow">
+            <span class="pill">Préparation de solutions</span>
+            <span class="pill">Dilutions · Étallonage</span>
+            <span class="pill">Spectro UV-Vis</span>
+            <span class="pill">Chromatographie HPLC/CPG</span>
+            <span class="pill">Polarographie</span>
+          </div>
+        </div>
 
-<h4>Outils numériques</h4>
-<ul>
-<li>Excel (traitement de données scientifiques)</li>
-<li>Python (bases pour calcul scientifique)</li>
-</ul>
+        <div class="card" style="padding:14px;">
+          <h3>Matériaux & caractérisation</h3>
+          <div class="pillrow">
+            <span class="pill">Diffraction X (XRD)</span>
+            <span class="pill">Identification de phases</span>
+            <span class="pill">Indices de Miller</span>
+            <span class="pill">Interprétation de diagrammes</span>
+          </div>
+        </div>
 
-<hr>
+        <div class="card" style="padding:14px;">
+          <h3>Outils numériques</h3>
+          <div class="pillrow">
+            <span class="pill">Excel (graphes, régressions)</span>
+            <span class="pill">Traitement de données</span>
+            <span class="pill">Python (bases)</span>
+            <span class="pill">Calcul scientifique</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<h3>Projets expérimentaux</h3>
+    <section id="projects" class="card">
+      <h3>Projets</h3>
+      <p style="margin-top:-6px; color: var(--muted);">
+        (Tu peux remplacer/ajouter des projets selon tes TP. Chaque projet = 1 “card”.)
+      </p>
 
-<h4>Diffraction X</h4>
-<p>
-Identification des phases cristallines (anatase / rutile) 
-et analyse des diagrammes de diffraction.
-</p>
+      <div class="cols3" style="margin-top:12px;">
+        <div class="project">
+          <h4>Diffraction X – TiO₂</h4>
+          <p style="color: var(--muted); margin:0;">
+            Identification des phases (anatase/rutile), indexation et analyse du diffractogramme.
+          </p>
+          <div class="meta">
+            <span class="tag purple">XRD</span>
+            <span class="tag blue">Phases</span>
+            <span class="tag ok">Analyse</span>
+          </div>
+          <div class="links">
+            <a href="#" title="Optionnel: lien vers PDF / image">Voir le rendu</a>
+            <a href="#" title="Optionnel: data / script">Données / script</a>
+          </div>
+        </div>
 
-<h4>Polarographie</h4>
-<p>
-Étude du courant limite et détermination du potentiel demi-onde (E1/2).
-</p>
+        <div class="project">
+          <h4>Polarographie – Cd²⁺</h4>
+          <p style="color: var(--muted); margin:0;">
+            Détermination du <i>E<sub>1/2</sub></i> et du courant limite, exploitation du polarogramme.
+          </p>
+          <div class="meta">
+            <span class="tag warn">Électrochimie</span>
+            <span class="tag blue">E1/2</span>
+            <span class="tag ok">Courbes</span>
+          </div>
+          <div class="links">
+            <a href="#">Voir le rendu</a>
+            <a href="#">Données / calcul</a>
+          </div>
+        </div>
 
-<h4>Chromatographie CPG</h4>
-<p>
-Analyse de chromatogrammes et identification des composés.
-</p>
+        <div class="project">
+          <h4>Chromatographie CPG/HPLC</h4>
+          <p style="color: var(--muted); margin:0;">
+            Lecture de chromatogrammes, temps de rétention, identification et discussion des résultats.
+          </p>
+          <div class="meta">
+            <span class="tag blue">Chromato</span>
+            <span class="tag purple">HPLC/CPG</span>
+            <span class="tag ok">Interprétation</span>
+          </div>
+          <div class="links">
+            <a href="#">Voir le rendu</a>
+            <a href="#">Chromatogrammes</a>
+          </div>
+        </div>
+      </div>
 
-<h4>Thermodynamique</h4>
-<p>
-Étude du fonctionnement d’une pompe et analyse des transferts thermiques.
-</p>
+      <div class="cols3" style="margin-top:12px;">
+        <div class="project">
+          <h4>Thermodynamique – Pompe</h4>
+          <p style="color: var(--muted); margin:0;">
+            Étude du fonctionnement d’une pompe, pertes de charge et interprétation des mesures.
+          </p>
+          <div class="meta">
+            <span class="tag warn">Thermo</span>
+            <span class="tag blue">Pompe</span>
+            <span class="tag ok">Exploitation</span>
+          </div>
+          <div class="links">
+            <a href="#">Voir le rendu</a>
+            <a href="#">Tableaux / graphes</a>
+          </div>
+        </div>
 
-<hr>
+        <div class="project">
+          <h4>Spectro UV-Vis – Étalonnage</h4>
+          <p style="color: var(--muted); margin:0;">
+            Courbe d’étalonnage (Beer-Lambert), calcul de concentration et incertitudes.
+          </p>
+          <div class="meta">
+            <span class="tag blue">UV-Vis</span>
+            <span class="tag purple">Beer-Lambert</span>
+            <span class="tag ok">Régression</span>
+          </div>
+          <div class="links">
+            <a href="#">Voir le rendu</a>
+            <a href="#">Graphique</a>
+          </div>
+        </div>
 
-<h3>Contact</h3>
-<p>Email : votre-email@email.com</p>
+        <div class="project">
+          <h4>Mini-projet Python</h4>
+          <p style="color: var(--muted); margin:0;">
+            Scripts simples pour calcul scientifique, traitement de données et tracés.
+          </p>
+          <div class="meta">
+            <span class="tag purple">Python</span>
+            <span class="tag blue">Data</span>
+            <span class="tag ok">Calcul</span>
+          </div>
+          <div class="links">
+            <a href="#">Code</a>
+            <a href="#">Exemples</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <section id="contact" class="card">
+      <h3>Contact</h3>
+      <p style="color: var(--muted); margin:0;">
+        Email : <a href="mailto:votre-email@email.com">votre-email@email.com</a><br/>
+        LinkedIn : <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">à compléter</a><br/>
+        GitHub : <a href="https://github.com/hndo-1602" target="_blank" rel="noreferrer">github.com/hndo-1602</a>
+      </p>
+      <p style="margin-top:10px; color: var(--muted);">
+        Astuce: trong CV, bạn thêm dòng <code class="inline">Portfolio scientifique: https://hndo-1602.github.io</code>
+      </p>
+    </section>
+
+    <footer>
+      <span>© <span id="year"></span> Như Nguyen · Portfolio scientifique</span>
+      <span style="color: var(--muted);">Mis à jour: <code class="inline">index.html</code></span>
+    </footer>
+
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
